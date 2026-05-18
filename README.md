@@ -95,12 +95,4 @@ See [BUILD-DESKTOP.txt](BUILD-DESKTOP.txt) for packaging installers (`.app`, `.e
 
 This project is licensed under **MIT**. Upstream libraries carry their own licenses; see their packages and bundled vendor assets for terms.
 
----
-
-<br/>
-
-<p align="center">
-  <sub><strong>Tagline:</strong> Sovereign · Calculated · Decisive</sub>
-</p>
-
 <br/>
