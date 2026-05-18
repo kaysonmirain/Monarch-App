@@ -57,12 +57,4 @@ The name and tagline set the tone:
 
 This project is licensed under **ISC**. Upstream libraries carry their own licenses; see their packages and bundled vendor assets for terms.
 
----
-
-<br/>
-
-<p align="center">
-  <sub><strong>Tagline:</strong> Sovereign · Calculated · Decisive</sub>
-</p>
-
 <br/>
