@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#141a17"/>
+  <text
+    x="16"
+    y="16"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-size="27"
+    fill="#f4f8f0"
+    font-family="system-ui, 'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols 2', serif"
+  >&#9813;</text>
+</svg>

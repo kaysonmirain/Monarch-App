@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monarch</title>
+  <meta name="description" content="Sovereign · Calculated · Decisive" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    (function () {
+      var ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
+      var platform = typeof navigator !== "undefined" ? navigator.platform || "" : "";
+      /* Chromium often omits navigator.platform; still detect Mac Electron for layout CSS */
+      var looksMac =
+        /^Mac/i.test(platform) || /\(Macintosh;|\(Mac OS X|macOS/i.test(ua);
+      if (/Electron\//i.test(ua) && looksMac) {
+        document.documentElement.classList.add("is-electron-mac");
+      }
+    })();
+  </script>
+  <!-- Keeps title/menu usable if the main sheet 404s or the preview strips linked CSS -->
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #0f1210;
+      color: #eef2ea;
+      font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    .title-screen {
+      box-sizing: border-box;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+      -webkit-overflow-scrolling: touch;
+    }
+    .title-screen__panel {
+      box-sizing: border-box;
+      max-width: 36rem;
+      padding: 2rem 1.75rem;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+    }
+    .title-simple.title-simple--hero {
+      box-sizing: border-box;
+      font-size: min(
+        clamp(1.55rem, calc(0.68rem + 4.35vw), 3.55rem),
+        calc((100dvi - 3rem) / 7)
+      );
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      max-width: 100%;
+      color: #e8f2e4;
+    }
+  </style>
+</head>
+<body>
+  <div class="file-protocol-banner" id="fileProtocolBanner" hidden role="alert">
+    Use a local server (not a saved file) so Stockfish loads—run <code class="file-protocol-banner__cmd">npm start</code>, then open
+    <a class="file-protocol-banner__link" href="http://localhost:8080/">localhost:8080</a>.
+  </div>
+  <script>
+    if (location.protocol === "file:") {
+      var fb = document.getElementById("fileProtocolBanner");
+      if (fb) fb.hidden = false;
+    }
+  </script>
+  <div class="bg-aurora" aria-hidden="true"></div>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <div id="gameToast" class="win-celebration" role="status" aria-live="assertive" aria-atomic="true" hidden>
+    <div class="win-celebration__backdrop" aria-hidden="true"></div>
+    <div class="win-celebration__halo" aria-hidden="true"></div>
+    <div class="win-celebration__rings" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="win-celebration__particles" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="win-celebration__card">
+      <div class="win-celebration__icon" aria-hidden="true">♔</div>
+      <p class="win-celebration__eyebrow">Checkmate</p>
+      <h2 class="win-celebration__title">Congrats!</h2>
+      <p class="win-celebration__sub">
+        That was your win — sharp play from start to mate. Celebrate it, then hit <strong>New</strong> anytime.
+      </p>
+    </div>
+  </div>
+
+  <div class="title-screen title-screen--minimal" id="titleScreen">
+    <div class="title-screen__inner title-screen__inner--simple">
+      <div class="title-screen__panel title-screen__panel--minimal">
+        <div class="title-menu-stack title-menu-stack--hero">
+          <header class="title-hero">
+            <div class="title-hero__queen-wrap" aria-hidden="true">
+              <span
+                class="piece piece--w title-hero__queen-slot"
+                data-piece-art="q"
+                data-piece-color="w"
+                data-piece-classes="piece-svg piece-svg--staunton"
+              ></span>
+            </div>
+            <div class="title-hero__copy">
+              <h1 class="title-simple title-simple--hero">Monarch</h1>
+              <p class="title-hero__kicker" aria-label="Sovereign, calculated, decisive">Sovereign · Calculated · Decisive</p>
+            </div>
+          </header>
+          <fieldset class="title-side-picker title-side-picker--minimal" aria-label="Your chess color">
+            <div class="side-cards side-cards--minimal" role="radiogroup">
+              <label class="side-card side-card--white side-card--compact">
+                <input type="radio" name="userSide" value="w" checked />
+                <span class="side-card__stripe side-card__stripe--white" aria-hidden="true" title="White"></span>
+                <div class="side-card__center">
+                  <span class="side-card__title">White</span>
+                  <span class="side-card__sub">Moves first</span>
+                </div>
+              </label>
+              <label class="side-card side-card--black side-card--compact">
+                <input type="radio" name="userSide" value="b" />
+                <span class="side-card__stripe side-card__stripe--black" aria-hidden="true" title="Black"></span>
+                <div class="side-card__center">
+                  <span class="side-card__title">Black</span>
+                  <span class="side-card__sub">Moves second</span>
+                </div>
+              </label>
+            </div>
+          </fieldset>
+          <div class="title-controls title-controls--play-only">
+            <button type="button" class="btn-play" id="btnPlay">
+              <span class="btn-play__text">Play</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arena" id="arena" aria-hidden="true">
+    <div class="arena-vignette" aria-hidden="true"></div>
+
+    <header class="arena-top">
+      <button type="button" class="btn-icon" id="btnBackMenu" aria-label="Back to home menu" title="Back to home">
+        <span class="btn-icon__glyph" aria-hidden="true">←</span>
+      </button>
+      <div class="arena-top__actions" role="toolbar" aria-label="Game actions">
+        <button type="button" class="btn btn-ghost" id="btnNew" title="New game from the start">New</button>
+        <button type="button" class="btn btn-ghost" id="btnUndoAll" disabled title="Clear all moves">Reset</button>
+        <button type="button" class="btn btn-ghost" id="btnUndo" disabled title="Undo last move (⌘/Ctrl+Z)">Undo</button>
+      </div>
+    </header>
+
+    <div class="arena-main" id="gameMain" role="main" aria-label="Chess board and suggestions">
+      <div class="arena-board-zone">
+        <div class="board-frame board-frame--fullscreen">
+          <div class="board-glow"></div>
+          <div class="chess-board coordinates" id="board"></div>
+        </div>
+      </div>
+
+      <aside class="dock dock--solo dock--guide" aria-label="Tips and outlook">
+        <div class="status-pill status-pill--dock" id="statusPill" role="status" aria-live="polite">
+          <span class="dot" id="turnDot"></span>
+          <span id="statusText"></span>
+        </div>
+        <section
+          class="dock-chances dock-chances--rail dock-chances--idle-stats"
+          aria-label="Rough win, draw, and loss outlook"
+          id="dockChancesPanel"
+        >
+          <div class="dock-chances__cols" role="presentation">
+            <div class="dock-chances__col dock-chances__col--you" aria-label="You win">
+              <span class="dock-chances__col-head">You win</span>
+              <span class="dock-chances__col-pct"><span id="dockWinPct">—</span>%</span>
+            </div>
+            <div class="dock-chances__col dock-chances__col--draw" aria-label="Draw">
+              <span class="dock-chances__col-head">Draw</span>
+              <span class="dock-chances__col-pct"><span id="dockDrawPct">—</span>%</span>
+            </div>
+            <div class="dock-chances__col dock-chances__col--them" aria-label="They win">
+              <span class="dock-chances__col-head">They win</span>
+              <span class="dock-chances__col-pct"><span id="dockTheirPct">—</span>%</span>
+            </div>
+          </div>
+        </section>
+        <div
+          class="coach-card coach-card--simple"
+          aria-live="polite"
+          aria-label="Suggested move for you to play on your turn"
+        >
+          <p class="coach-card__thinking" id="coachThinkingHint" aria-live="polite" hidden></p>
+          <div class="coach-card__layout">
+            <div class="coach-card__why" id="coachWhy"></div>
+            <section
+              class="captures-strip captures-strip--dock captures-strip--coach-tail"
+              aria-label="Captured pieces"
+            >
+              <div class="captures-strip__row" role="group" aria-labelledby="capYouLabel">
+                <span class="captures-strip__label captures-strip__label--coach-tail" id="capYouLabel">You captured</span>
+                <div class="captures-strip__pieces captures-strip__pieces--dock" id="capYou"></div>
+              </div>
+              <div class="captures-strip__row" role="group" aria-labelledby="capOppLabel">
+                <span class="captures-strip__label captures-strip__label--coach-tail" id="capOppLabel">They captured</span>
+                <div class="captures-strip__pieces captures-strip__pieces--dock" id="capOpp"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-block btn-coach-move accent"
+          id="btnCoachMove"
+          disabled
+          title="Play Monarch's suggested move for your color (your turn only)"
+        >
+          Play your suggested move
+        </button>
+        <div class="dock-learn-stack">
+          <div class="dock-help-panel">
+            <p class="engine-status engine-status--minimal engine-status--dock-stack dock-help-panel__engine" id="engineStatus"></p>
+            <section class="dock-guide dock-guide--rail dock-guide--in-panel" aria-label="Quick tips">
+              <ul class="dock-guide__list dock-guide__list--rail dock-guide__list--no-title">
+                <li>
+                  On <strong>your turn</strong>, Monarch suggests <strong>your</strong> best move — amber/teal highlights and
+                  <strong>Play your suggested move</strong> play it for your color.
+                </li>
+                <li>
+                  On <strong>their turn</strong>, <strong>you</strong> move their pieces on the board (tap a piece, then a square).
+                  Monarch does not move for them — only coaches you.
+                </li>
+                <li>
+                  <strong>You win / Draw / They win</strong> updates from the engine while it thinks — useful odds, not a guarantee.
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="promoModal" role="dialog" aria-modal="true" aria-labelledby="promoTitle">
+    <div class="modal-panel">
+      <h3 id="promoTitle">Your pawn made it — promote!</h3>
+      <p>Queen is almost always the star. Pick one:</p>
+      <div class="promo-pieces" id="promoChoices"></div>
+      <button type="button" class="btn btn-ghost promo-cancel" id="promoCancel">
+        Cancel — pick a different move
+      </button>
+    </div>
+  </div>
+
+  <script src="vendor/chess.min.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="vendor/stockfish/stockfish-nnue-16-single.js" id="stockfishLoader"></script>
+  <script src="js/piece-art.js"></script>
+  <script src="js/title-pieces.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
