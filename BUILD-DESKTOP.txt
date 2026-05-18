@@ -1,0 +1,33 @@
+Monarch — desktop (.exe / .app) builds
+========================================
+
+Why Electron?
+  Stockfish WASM must load over HTTP. The desktop app runs a tiny server on
+  127.0.0.1 only, then opens the game in a window.
+
+One-time setup (from this folder)
+---------------------------------
+  npm install
+
+Run without packaging (dev)
+---------------------------
+  npm run electron
+
+Create installers / portable builds (output in ./dist.noindex/)
+-----------------------------------------------------------
+  macOS (on a Mac):     npm run dist:mac
+                        If signing fails (no Apple dev cert), use:
+                        npm run dist:mac:unsigned
+
+  Windows (.exe):       npm run dist:win    ← run this ON Windows
+  Linux:                npm run dist:linux
+
+Windows portable .exe (easy to zip and send)
+--------------------------------------------
+  After `npm run dist:win`, look under dist.noindex/ for a "Portable" executable.
+
+Cross-building Windows .exe from a Mac often fails unless extra tools (e.g. Wine)
+are installed. Easiest: clone the project on a Windows PC, npm install, npm run dist:win.
+
+Ship everything under dist.noindex/ that electron-builder prints (the portable exe or the
+Setup exe plus any DLLs if using NSIS).
