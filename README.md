@@ -89,10 +89,4 @@ npm run electron
 
 See [BUILD-DESKTOP.txt](BUILD-DESKTOP.txt) for packaging installers (`.app`, `.exe`, `AppImage`).
 
----
-
-## License
-
-This project is licensed under **MIT**. Upstream libraries carry their own licenses; see their packages and bundled vendor assets for terms.
-
 <br/>
